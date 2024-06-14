@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using ImdbProxy.Proxy.Classes;
 using ImdbProxy.View;
 using ImdbProxy.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,10 @@ public partial class App : Application
 
         Collection.AddSingleton<MainViewModel>();
         Collection.AddSingleton<MainPageViewModel>();
+        Collection.AddSingleton<MovieFullViewModel>();
+        Collection.AddSingleton<OmdbApi>();
+        Collection.AddSingleton<TmdbApi>();
+        Collection.AddSingleton<Proxy.Classes.Proxy>();
 
         Collection.AddSingleton<MainView>();
 

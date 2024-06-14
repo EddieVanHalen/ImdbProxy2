@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Net.Http;
+﻿using System.Net.Http;
 using ImdbProxy.Model;
 using ImdbProxy.Proxy.Interfaces;
 using Newtonsoft.Json;
@@ -12,23 +11,18 @@ public class OmdbApi : IMovieFinder
 
     public async Task<Movie?> RequestMovieAsync(string movieId)
     {
+        throw new Exception();
         using (var client = new HttpClient())
         {
             var url = new Uri($"http://www.omdbapi.com/?i={movieId}&apikey={_api}");
 
-            try
-            {
-                var response = await client.GetStringAsync(url);
+            var response = await client.GetStringAsync(url);
 
-                var movie = JsonConvert.DeserializeObject<Movie>(response);
+            var movie = JsonConvert.DeserializeObject<Movie>(response);
 
-                if (movie?.Response == "True")
-                {
-                    return movie;
-                }
-            }
-            catch (WebException e)
+            if (movie?.Response == "True")
             {
+                return movie;
             }
         }
 
@@ -36,32 +30,27 @@ public class OmdbApi : IMovieFinder
     }
 
 
-    public async Task<ICollection<Movie>> RequestMoviesAsync(string movieName)
+    public async Task<IList<Movie>> RequestMoviesAsync(string movieName)
     {
+        throw new Exception();
         var moviesList = new List<Movie>();
 
         using (var client = new HttpClient())
         {
-            var url = new Uri($"http://www.omdbapi.com/?s={movieName}&apikey={_api}");
+            var url = new Uri($"http://www.omdbapi.com/?s={movieName}&page=1&apikey={_api}");
 
-            try
+            var response = await client.GetStringAsync(url);
+
+            var movies = JsonConvert.DeserializeObject<SearchResult>(response);
+
+            if (movies?.Response == "True")
             {
-                var response = await client.GetStringAsync(url);
-
-                var movies = JsonConvert.DeserializeObject<SearchResult>(response);
-
-                if (movies?.Response == "True")
+                foreach (var item in movies.Search)
                 {
-                    foreach (var item in movies.Search)
-                    {
-                        moviesList.Add(item);
-                    }
-
-                    return moviesList;
+                    moviesList.Add(item);
                 }
-            }
-            catch (WebException e)
-            {
+
+                return moviesList;
             }
         }
 

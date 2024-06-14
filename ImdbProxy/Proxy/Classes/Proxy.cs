@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Caching;
-using System.Windows;
 using ImdbProxy.Model;
 using ImdbProxy.Proxy.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ImdbProxy.Proxy.Classes;
 
@@ -14,23 +14,23 @@ public class Proxy : IMovieFinder
 
     public Proxy()
     {
-        _omdb = new OmdbApi();
-        _tmdb = new TmdbApi();
+        _omdb = App.Provider.GetService<OmdbApi>()!;
+        _tmdb = App.Provider.GetService<TmdbApi>()!;
         _cache = MemoryCache.Default;
     }
     
     public async Task<Movie?> RequestMovieAsync(string movieId)
     {
+        var movie = GetMovieFromCache(movieId);
+
+        if (movie is not null)
+        {
+            return movie;
+        }
+        
         try
         {
-            var movie = GetMovieFromCache(movieId);
-
-            if (movie is not null)
-            {
-                return movie;
-            }
-            
-            movie = await RequestMovieAsync(movieId);
+            movie = await _omdb.RequestMovieAsync(movieId);
             
             if (movie is not null)
             {
@@ -41,19 +41,26 @@ public class Proxy : IMovieFinder
         }
         catch (Exception e)
         {
-            return await _tmdb.RequestMovieAsync(movieId);
+            movie = await _tmdb.RequestMovieAsync(movieId);
+            
+            if (movie is not null)
+            {
+                AddMovieToCache(movie.Id!, movie);
+            }
+            
+            return movie;
         }
     }
     
-    public Task<ICollection<Movie>> RequestMoviesAsync(string movieName)
+    public async Task<IList<Movie>> RequestMoviesAsync(string movieName)
     {
         try
         {
-            return _omdb.RequestMoviesAsync(movieName);
+            return await _omdb.RequestMoviesAsync(movieName);
         }
         catch (Exception e)
         {
-            return _tmdb.RequestMoviesAsync(movieName);
+            return await _tmdb.RequestMoviesAsync(movieName);
         }
     }
     

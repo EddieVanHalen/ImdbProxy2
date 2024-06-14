@@ -1,18 +1,21 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using ImdbProxy.Messages;
 using ImdbProxy.Model;
-using ImdbProxy.Proxy.Classes;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ImdbProxy.ViewModel;
 
 [INotifyPropertyChanged]
 public partial class MainPageViewModel : BaseViewModel
 {
-    [ObservableProperty] private ICollection<Movie?> _moviesList;
+    [ObservableProperty] private IList<Movie> _moviesList;
 
     [ObservableProperty] private int? _selectedIndex;
+    
+    [ObservableProperty] private string? _movieName;
 
     public MainPageViewModel()
     {
@@ -22,16 +25,36 @@ public partial class MainPageViewModel : BaseViewModel
     [RelayCommand]
     private async void FindMovieAsync()
     {
-        var finder = new OmdbApi();
+        var finder = new Proxy.Classes.Proxy();
+        
+        if(string.IsNullOrWhiteSpace(MovieName)) return;
+        try
+        {
 
-        // MoviesList = await finder.RequestMoviesAsync("barbie");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        MoviesList = await finder.RequestMoviesAsync(MovieName!);
     }
 
     [RelayCommand]
     private async void GetConcreteMovieAsync()
     {
-        var finder = new TmdbApi();
+        var finder = new Proxy.Classes.Proxy();
 
-        MoviesList = await finder.RequestMoviesAsync("Barbie");
+        if (SelectedIndex is null)
+        {
+            return;
+        }
+        
+        var movie = await finder.RequestMovieAsync(MoviesList[SelectedIndex.Value].Id!);
+
+        var model = App.Provider.GetService<MovieFullViewModel>();
+        model!.Movie = movie;
+        var message = new ChangeViewModelMessage(model!);
+        WeakReferenceMessenger.Default.Send(message);
     }
 }

@@ -29,15 +29,15 @@ public class TmdbApi : IMovieFinder
         return null;
     }
     
-    public async Task<ICollection<Movie>> RequestMoviesAsync(string query)
+    public async Task<IList<Movie>> RequestMoviesAsync(string query)
     {
         using var _httpClient = new HttpClient();
         
         var url = $"https://api.themoviedb.org/3/search/movie?api_key={_apiKey}&query={query}";
         var response = await _httpClient.GetStringAsync(url);
         var searchResult = JsonConvert.DeserializeObject<TmdbSearchResult>(response);
-        var movies = searchResult.Results ?? new List<TmdbMovie>();
-        ICollection<Movie> moviesToSend = new List<Movie>();
+        var movies = searchResult?.Results ?? new List<TmdbMovie>();
+        IList<Movie> moviesToSend = new List<Movie>();
         
         foreach (var movie in movies)
         {

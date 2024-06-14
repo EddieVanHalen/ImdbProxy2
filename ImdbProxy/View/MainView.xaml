@@ -12,6 +12,10 @@
         <DataTemplate DataType="{x:Type vm:MainPageViewModel}">
             <v:MainPageView />
         </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type vm:MovieFullViewModel}">
+            <v:MovieFullView />
+        </DataTemplate>
     </Window.Resources>
     
     <Grid>

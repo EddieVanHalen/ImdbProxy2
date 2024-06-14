@@ -14,7 +14,6 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition/>
         </Grid.RowDefinitions>
         
         
@@ -24,12 +23,15 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
-        <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Movie.Title}"/>
-        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Movie.ReleaseDate}"/>
-        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Movie.Actors}"/>
-        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Movie.Genre}"/>
-        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Movie.Overview}"/>
-        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Movie.Rating}"/>
-        <Image Grid.Row="" Grid.Column="2" Source="{Binding Movie.Poster}"/>
+        <Button Grid.Column="0" Grid.Row="0" Content="Exit" Width="150" HorizontalAlignment="Left" FontSize="20" FontWeight="1" Command="{Binding BackCommand}"/>
+        
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" Text="{Binding Movie.Title}" FontSize="15" FontWeight="1" />
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Text="{Binding Movie.ReleaseDate}" FontSize="15" FontWeight="1" />
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Movie.Actors}" FontSize="10" FontWeight="1" />
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3" Text="{Binding Movie.Genre}" FontSize="15" FontWeight="1" />
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="{Binding Movie.Overview}" FontSize="10" FontWeight="1" />
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5" Text="{Binding Movie.Rating}" FontSize="15" FontWeight="1" />
+        <Image Grid.Row="0" Grid.Column="2" Source="{Binding Movie.Poster}" Grid.RowSpan="6"/>
+        
     </Grid>
 </UserControl>

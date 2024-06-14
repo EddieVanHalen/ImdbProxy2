@@ -11,7 +11,6 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition/>
         </Grid.RowDefinitions>
         
         <Grid.ColumnDefinitions>
@@ -20,9 +19,14 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
-        <Button Content="Find Movie" Grid.Column="0" Grid.Row="0" Command="{Binding GetConcreteMovieAsyncCommand}"/>
+        <Button Content="Find Movie" Grid.Column="1" Grid.Row="0" FontSize="20" FontWeight="1" Command="{Binding FindMovieAsyncCommand}" Width="150" Height="100"/>
         
-        <ListView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding MoviesList}" SelectedIndex="{Binding SelectedIndex}"/>
+        <Button Content="Get Movie Data" Grid.Column="0" Grid.Row="0" FontSize="20" FontWeight="1" Command="{Binding GetConcreteMovieAsyncCommand}" Width="150" Height="100"/>
         
+        <ListView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding MoviesList}" SelectedIndex="{Binding SelectedIndex}" Grid.ColumnSpan="3" FontSize="20" FontWeight="1"/>
+        
+        <Label Grid.Column="2" Grid.Row="0" Content="Movie Name : " FontSize="20" FontWeight="1" HorizontalAlignment="Center" Margin="0 50 0 0"/> 
+        
+        <TextBox HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="2" Grid.Row="0" Text="{Binding MovieName}" Width="300" Height="90" FontSize="25" FontWeight="1"/>
     </Grid>
 </UserControl>

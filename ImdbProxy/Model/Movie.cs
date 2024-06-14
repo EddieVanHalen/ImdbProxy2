@@ -18,7 +18,7 @@ public class Movie
 
     [JsonProperty("Poster")] public string? Poster { get; set; }
 
-    [JsonProperty("Rating")] public string? Rating { get; set; }
+    [JsonProperty("imdbRating")] public string? Rating { get; set; }
 
     [JsonProperty("Response")] public string? Response { get; set; }
 

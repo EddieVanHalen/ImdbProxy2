@@ -6,5 +6,5 @@ public interface IMovieFinder
 {
     Task<Movie?> RequestMovieAsync(string movieId);
 
-    Task<ICollection<Movie>> RequestMoviesAsync(string movieName);
+    Task<IList<Movie>> RequestMoviesAsync(string movieName);
 }
